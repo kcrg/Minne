@@ -1,0 +1,9 @@
+{
+  "Todo": {
+    "id": "int",
+    "title": "string",
+    "description": "string",
+    "completed": "boolean",
+    "createdAt": "date"
+  }
+}
