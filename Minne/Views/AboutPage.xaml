@@ -5,6 +5,8 @@
     xmlns:viewmodels="clr-namespace:Minne.ViewModels"
     Title="About"
     prism:ViewModelLocator.AutowireViewModel="True"
+    BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight},
+                                      Dark={StaticResource BackgroundColorDark}}"
     Visual="Material">
     <ContentPage.Content>
         <Grid>

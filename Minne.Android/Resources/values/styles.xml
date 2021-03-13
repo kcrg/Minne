@@ -6,4 +6,12 @@
 
     <!-- Set theme colors from https://aka.ms/material-colors -->
   </style>
+
+  <style name="SplashScreenTheme" parent="MainTheme">
+    <item name="android:windowBackground">@drawable/splash_screen</item>
+    <item name="android:statusBarColor">@android:color/black</item>
+    <item name="android:windowLightStatusBar">false</item>
+    <item name="android:navigationBarColor">@android:color/black</item>
+    <item name="android:windowLightNavigationBar">false</item>
+  </style>
 </resources>

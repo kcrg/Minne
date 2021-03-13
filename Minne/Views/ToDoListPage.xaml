@@ -8,20 +8,40 @@
     xmlns:viewmodels="clr-namespace:Minne.ViewModels"
     Title="Tasks"
     prism:ViewModelLocator.AutowireViewModel="True"
+    BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight},
+                                      Dark={StaticResource BackgroundColorDark}}"
     Visual="Material">
     <ContentPage.ToolbarItems>
         <controls:BaseToolbarItem Command="{Binding AddTaskCommand}" Glyph="{StaticResource AddIcon}" />
     </ContentPage.ToolbarItems>
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="ToDoLabelStyle" x:DataType="models:ToDoModel"
+                BasedOn="{StaticResource ListLabel}"
+                TargetType="Label">
+                <Setter Property="TextDecorations" Value="None" />
+                <Style.Triggers>
+                    <DataTrigger
+                        Binding="{Binding Completed}"
+                        TargetType="Label"
+                        Value="True">
+                        <Setter Property="TextDecorations" Value="Strikethrough" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ContentPage.Content>
         <Grid>
             <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
                 <CollectionView x:Name="collectionView"
-                    ItemSizingStrategy="MeasureFirstItem"
+                    ItemSizingStrategy="MeasureAllItems"
                     ItemsSource="{Binding ToDoList}"
                     SelectionMode="Single">
                     <CollectionView.ItemsLayout>
-                        <LinearItemsLayout Orientation="Vertical" />
+                        <LinearItemsLayout ItemSpacing="8" Orientation="Vertical" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.Behaviors>
                         <behaviors:EventToCommandBehavior
@@ -31,8 +51,12 @@
                     </CollectionView.Behaviors>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:ToDoModel">
-                            <StackLayout Padding="10">
-                                <Frame Padding="8" CornerRadius="0">
+                            <StackLayout Padding="8,2,8,2">
+                                <Frame
+                                    Padding="8"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight},
+                                                                      Dark={StaticResource BackgroundColorDark}}"
+                                    CornerRadius="0">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="64*" />
@@ -41,25 +65,45 @@
                                             <ColumnDefinition Width="12*" />
                                         </Grid.ColumnDefinitions>
 
-                                        <StackLayout Grid.Column="0" Margin="12,0,0,0">
-                                            <Label Style="{StaticResource ListLabel}" Text="{Binding Title}" />
-                                            <Label
-                                                Style="{StaticResource ListLabel}"
-                                                Text="{Binding Description}"
-                                                TextColor="DarkGray" />
-                                        </StackLayout>
+                                        <Label
+                                            Margin="-2,-4,0,0"
+                                            HorizontalOptions="Start"
+                                            VerticalOptions="Start"
+                                            FontSize="8"
+                                            Text="{Binding Id}"
+                                            TextColor="LightGray" />
 
-                                        <CheckBox
+                                        <Label
+                                            Grid.Column="0"
+                                            Margin="8"
+                                            Style="{StaticResource ToDoLabelStyle}"
+                                            Text="{Binding Title}">
+                                            <Label.Triggers>
+                                                <DataTrigger
+                                                    Binding="{Binding Source={x:Reference checkBox}, Path=IsChecked}"
+                                                    TargetType="Label"
+                                                    Value="True">
+                                                    <Setter Property="TextDecorations" Value="Strikethrough" />
+                                                </DataTrigger>
+                                                <DataTrigger
+                                                    Binding="{Binding Source={x:Reference checkBox}, Path=IsChecked}"
+                                                    TargetType="Label"
+                                                    Value="False">
+                                                    <Setter Property="TextDecorations" Value="None" />
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+
+                                        <controls:CheckBoxImageButton x:Name="checkBox"
                                             Grid.Column="1"
                                             IsChecked="{Binding Completed}"
-                                            Color="Black" />
+                                            Style="{StaticResource CheckBoxImageButton}" />
 
                                         <controls:BaseImageButton
                                             Grid.Column="2"
                                             Clicked="Edit"
                                             CommandParameter="{Binding Id}"
                                             Glyph="{StaticResource EditIcon}"
-                                            GlyphColor="Black"
                                             Style="{StaticResource ListImageButton}" />
 
                                         <controls:BaseImageButton
@@ -67,7 +111,6 @@
                                             Clicked="Delete"
                                             CommandParameter="{Binding Id}"
                                             Glyph="{StaticResource DeleteIcon}"
-                                            GlyphColor="Black"
                                             Style="{StaticResource ListImageButton}" />
                                     </Grid>
                                 </Frame>

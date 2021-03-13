@@ -1,4 +1,6 @@
-﻿using Minne.Views;
+﻿using Minne.Services;
+using Minne.Services.Implementations;
+using Minne.Views;
 using Prism;
 using Prism.Ioc;
 using Xamarin.Forms;
@@ -40,6 +42,8 @@ namespace Minne
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.Register(typeof(IRestService), typeof(RestService));
+
             containerRegistry.RegisterForNavigation<AppShell>();
         }
     }

@@ -2,18 +2,18 @@
 
 namespace Minne.Controls
 {
-    public partial class BaseToolbarItem : ToolbarItem
+    public class BaseShellTab : Tab
     {
-        private readonly FontImageSource fontImageSource = new FontImageSource();
+        private readonly FontImageSource fontImageSource = new();
 
-        public BaseToolbarItem()
+        public BaseShellTab()
         {
             fontImageSource.FontFamily = "FontIcons";
-            fontImageSource.Size = 20;
-            IconImageSource = fontImageSource;
+            fontImageSource.Size = 64;
+            Icon = fontImageSource;
         }
 
-        public static readonly BindableProperty GlyphProperty = BindableProperty.Create(nameof(Glyph), typeof(string), typeof(BaseToolbarItem), default(string), BindingMode.OneWay);
+        public static readonly BindableProperty GlyphProperty = BindableProperty.Create(nameof(Glyph), typeof(string), typeof(BaseShellTab), default(string), BindingMode.OneWay);
         public string Glyph
         {
             get => (string)GetValue(GlyphProperty);

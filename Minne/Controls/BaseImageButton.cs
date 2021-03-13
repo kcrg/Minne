@@ -2,9 +2,9 @@
 
 namespace Minne.Controls
 {
-    public partial class BaseImageButton : ImageButton
+    public class BaseImageButton : ImageButton
     {
-        private readonly FontImageSource fontImageSource = new FontImageSource();
+        private readonly FontImageSource fontImageSource = new();
 
         public BaseImageButton()
         {

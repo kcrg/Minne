@@ -3,11 +3,17 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:Minne.Controls"
     xmlns:views="clr-namespace:Minne.Views"
-    Shell.BackgroundColor="White"
+    BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight},
+                                      Dark={StaticResource BackgroundColorDark}}"
+    Shell.BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight},
+                                            Dark={StaticResource BackgroundColorDark}}"
     Shell.FlyoutBehavior="Disabled"
-    Shell.ForegroundColor="Black"
-    Shell.TabBarUnselectedColor="DarkGray"
-    Shell.TitleColor="Black"
+    Shell.ForegroundColor="{AppThemeBinding Light={StaticResource ContrastColorLight},
+                                            Dark={StaticResource ContrastColorDark}}"
+    Shell.TabBarUnselectedColor="{AppThemeBinding Light={StaticResource LowContrastColorLight},
+                                                  Dark={StaticResource LowContrastColorDark}}"
+    Shell.TitleColor="{AppThemeBinding Light={StaticResource ContrastColorLight},
+                                       Dark={StaticResource ContrastColorDark}}"
     Visual="Material">
 
     <TabBar>

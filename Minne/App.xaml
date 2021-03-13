@@ -6,10 +6,10 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <styles:AboutPageStyle />
-                <styles:ToDoListPageStyle />
                 <ResourceDictionary Source="Styles/Values/Colors.xaml" />
                 <ResourceDictionary Source="Styles/Values/FontIcons.xaml" />
+                <styles:AboutPageStyle />
+                <styles:ToDoListPageStyle />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -1,6 +1,9 @@
 ﻿<ResourceDictionary x:Class="Minne.Styles.AboutPageStyle"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Values/Colors.xaml" />
+    </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="AboutDescriptionPanel" TargetType="StackLayout">
         <Setter Property="Margin" Value="0,0,0,100" />
@@ -11,14 +14,14 @@
 
     <Style x:Key="AboutTitleLabel" TargetType="Label">
         <Setter Property="HorizontalTextAlignment" Value="Center" />
-        <Setter Property="TextColor" Value="Black" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource ContrastColorLight}, Dark={StaticResource ContrastColorDark}}" />
         <Setter Property="FontSize" Value="30" />
         <Setter Property="FontFamily" Value="LatoBold" />
     </Style>
 
     <Style x:Key="AboutDescLabel" TargetType="Label">
         <Setter Property="HorizontalTextAlignment" Value="Center" />
-        <Setter Property="TextColor" Value="DarkGray" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource MediumContrastColorLight}, Dark={StaticResource MediumContrastColorDark}}" />
         <Setter Property="FontSize" Value="16" />
         <Setter Property="FontFamily" Value="LatoSemiBold" />
     </Style>
@@ -26,8 +29,8 @@
     <Style x:Key="AboutButton" TargetType="Button">
         <Setter Property="Margin" Value="25" />
         <Setter Property="Text" Value="Open Github" />
-        <Setter Property="TextColor" Value="White" />
-        <Setter Property="BackgroundColor" Value="Black" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource BackgroundColorLight}, Dark={StaticResource BackgroundColorDark}}" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource ContrastColorLight}, Dark={StaticResource ContrastColorDark}}" />
         <Setter Property="FontFamily" Value="LatoBold" />
         <Setter Property="CornerRadius" Value="25" />
         <Setter Property="Opacity" Value="0" />

@@ -28,14 +28,12 @@ namespace Minne.Views
 
         private void Delete(object sender, EventArgs e)
         {
-            //var btn = (ImageButton)sender;
+            var btn = (ImageButton)sender;
 
-            //int Id = int.Parse(btn.CommandParameter.ToString());
-            //ToDoModel contactToDelete = await App.Database.GetContactAsync(ID).ConfigureAwait(false);
-
-            //await App.Database.DeleteContactAsync(contactToDelete).ConfigureAwait(false);
-
-            LoadDatabase();
+            if ((BindingContext is ToDoListPageViewModel vm) && vm.DeleteCommand.CanExecute(btn.CommandParameter))
+            {
+                vm.DeleteCommand.Execute(btn.CommandParameter);
+            }
         }
 
         private void Edit(object sender, EventArgs e)

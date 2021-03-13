@@ -10,12 +10,14 @@ using Xamarin.Forms;
 
 namespace Minne.Droid
 {
-    [Activity(Label = "Minne", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize)]
+    [Activity(MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize)]
     public class MainActivity : Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+
+            SetTheme(Resource.Style.MainTheme);
 
             Platform.Init(this, savedInstanceState);
             Forms.Init(this, savedInstanceState);
@@ -23,12 +25,45 @@ namespace Minne.Droid
             UserDialogs.Init(this);
 
             LoadApplication(new App(new AndroidInitializer()));
+
+            SetStatusBarColor();
         }
+
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
             Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+
+            SetStatusBarColor();
+        }
+
+        public void SetStatusBarColor()
+        {
+            var currentTheme = Xamarin.Forms.Application.Current.RequestedTheme;
+
+            var color = currentTheme == OSAppTheme.Light ? Android.Graphics.Color.White : Android.Graphics.Color.Black;
+
+            var window = Platform.CurrentActivity.Window;
+
+            if (window is null)
+            {
+                return;
+            }
+
+            window.AddFlags(Android.Views.WindowManagerFlags.DrawsSystemBarBackgrounds);
+            window.ClearFlags(Android.Views.WindowManagerFlags.TranslucentStatus);
+            window.SetStatusBarColor(color);
+            window.SetNavigationBarColor(color);
+
+            const Android.Views.StatusBarVisibility statusBarVisibility = (Android.Views.StatusBarVisibility)Android.Views.SystemUiFlags.LightStatusBar
+                | (Android.Views.StatusBarVisibility)Android.Views.SystemUiFlags.LightNavigationBar;
+            window.DecorView.SystemUiVisibility = currentTheme == OSAppTheme.Light ? statusBarVisibility : 0;
         }
     }
 
