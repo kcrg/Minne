@@ -1,0 +1,22 @@
+﻿<Shell x:Class="Minne.Views.AppShell"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Minne.Controls"
+    xmlns:views="clr-namespace:Minne.Views"
+    Shell.BackgroundColor="White"
+    Shell.FlyoutBehavior="Disabled"
+    Shell.ForegroundColor="Black"
+    Shell.TabBarUnselectedColor="DarkGray"
+    Shell.TitleColor="Black"
+    Visual="Material">
+
+    <TabBar>
+        <controls:BaseShellTab Title="Tasks" Glyph="{StaticResource TasksIcon}">
+            <ShellContent ContentTemplate="{DataTemplate views:ToDoListPage}" />
+        </controls:BaseShellTab>
+
+        <controls:BaseShellTab Title="About" Glyph="{StaticResource AboutIcon}">
+            <ShellContent ContentTemplate="{DataTemplate views:AboutPage}" />
+        </controls:BaseShellTab>
+    </TabBar>
+</Shell>

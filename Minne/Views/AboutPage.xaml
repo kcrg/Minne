@@ -1,0 +1,52 @@
+﻿<ContentPage x:Class="Minne.Views.AboutPage" x:DataType="viewmodels:AboutPageViewModel"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+    xmlns:viewmodels="clr-namespace:Minne.ViewModels"
+    Title="About"
+    prism:ViewModelLocator.AutowireViewModel="True"
+    Visual="Material">
+    <ContentPage.Content>
+        <Grid>
+            <StackLayout x:Name="DescriptionPanel" Style="{StaticResource AboutDescriptionPanel}">
+
+                <Label Style="{StaticResource AboutTitleLabel}" Text="Kacper Tryniecki" />
+                <Label Style="{StaticResource AboutDescLabel}" Text="Xamarin Developer" />
+
+                <Label
+                    Margin="0,20,0,0"
+                    FontSize="24"
+                    Style="{StaticResource AboutTitleLabel}"
+                    Text="Contact:" />
+                <Label Style="{StaticResource AboutDescLabel}">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Phone: " />
+                            <Span Text="+48 733 428 869" TextDecorations="Underline">
+                                <Span.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding PhoneTappedCommand}" />
+                                </Span.GestureRecognizers>
+                            </Span>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label Margin="0,10,0,0" Style="{StaticResource AboutDescLabel}">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="E-mail: " />
+                            <Span Text="kacper@tryniecki.com" TextDecorations="Underline">
+                                <Span.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding EmailTappedCommand}" />
+                                </Span.GestureRecognizers>
+                            </Span>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </StackLayout>
+
+            <Button x:Name="GithubButton"
+                Command="{Binding OpenGithubCommand}"
+                Style="{StaticResource AboutButton}" />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

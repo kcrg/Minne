@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <!--  Tabbed Icons  -->
+    <x:String x:Key="TasksIcon">&#xE7C4;</x:String>
+    <x:String x:Key="AboutIcon">&#xE136;</x:String>
+
+    <!--  Other Icons  -->
+    <x:String x:Key="EditIcon">&#xE104;</x:String>
+    <x:String x:Key="DeleteIcon">&#xE107;</x:String>
+    <x:String x:Key="AddIcon">&#xE109;</x:String>
+
+</ResourceDictionary>

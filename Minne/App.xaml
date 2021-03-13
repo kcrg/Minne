@@ -1,8 +1,16 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<Application xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Minne.App">
+﻿<prism:PrismApplication x:Class="Minne.App"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:prism="clr-namespace:Prism.DryIoc;assembly=Prism.DryIoc.Forms"
+    xmlns:styles="clr-namespace:Minne.Styles">
     <Application.Resources>
-
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <styles:AboutPageStyle />
+                <styles:ToDoListPageStyle />
+                <ResourceDictionary Source="Styles/Values/Colors.xaml" />
+                <ResourceDictionary Source="Styles/Values/FontIcons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
-</Application>
+</prism:PrismApplication>

@@ -1,0 +1,101 @@
+﻿<ContentPage x:Class="Minne.Views.ToDoListPage" x:DataType="viewmodels:ToDoListPageViewModel"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviors="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:controls="clr-namespace:Minne.Controls"
+    xmlns:models="clr-namespace:Minne.Models"
+    xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+    xmlns:viewmodels="clr-namespace:Minne.ViewModels"
+    Title="Tasks"
+    prism:ViewModelLocator.AutowireViewModel="True"
+    Visual="Material">
+    <ContentPage.ToolbarItems>
+        <controls:BaseToolbarItem Command="{Binding AddTaskCommand}" Glyph="{StaticResource AddIcon}" />
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <Grid>
+            <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
+                <CollectionView x:Name="collectionView"
+                    ItemSizingStrategy="MeasureFirstItem"
+                    ItemsSource="{Binding ToDoList}"
+                    SelectionMode="Single">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.Behaviors>
+                        <behaviors:EventToCommandBehavior
+                            Command="{Binding ItemTappedCommand}"
+                            EventArgsParameterPath="CurrentSelection"
+                            EventName="SelectionChanged" />
+                    </CollectionView.Behaviors>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:ToDoModel">
+                            <StackLayout Padding="10">
+                                <Frame Padding="8" CornerRadius="0">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="64*" />
+                                            <ColumnDefinition Width="12*" />
+                                            <ColumnDefinition Width="12*" />
+                                            <ColumnDefinition Width="12*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackLayout Grid.Column="0" Margin="12,0,0,0">
+                                            <Label Style="{StaticResource ListLabel}" Text="{Binding Title}" />
+                                            <Label
+                                                Style="{StaticResource ListLabel}"
+                                                Text="{Binding Description}"
+                                                TextColor="DarkGray" />
+                                        </StackLayout>
+
+                                        <CheckBox
+                                            Grid.Column="1"
+                                            IsChecked="{Binding Completed}"
+                                            Color="Black" />
+
+                                        <controls:BaseImageButton
+                                            Grid.Column="2"
+                                            Clicked="Edit"
+                                            CommandParameter="{Binding Id}"
+                                            Glyph="{StaticResource EditIcon}"
+                                            GlyphColor="Black"
+                                            Style="{StaticResource ListImageButton}" />
+
+                                        <controls:BaseImageButton
+                                            Grid.Column="3"
+                                            Clicked="Delete"
+                                            CommandParameter="{Binding Id}"
+                                            Glyph="{StaticResource DeleteIcon}"
+                                            GlyphColor="Black"
+                                            Style="{StaticResource ListImageButton}" />
+                                    </Grid>
+                                </Frame>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    <CollectionView.EmptyView>
+                        <Grid>
+                            <!--<Label
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            Style="{StaticResource ListEmptyViewLabel}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="There is no to do to show.&#x0a;" />
+                                    <Span FontSize="14" Text="Try add a new one!" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>-->
+                            <ActivityIndicator
+                                IsRunning="{Binding IsLoading}"
+                                IsVisible="{Binding IsLoading}"
+                                Style="{StaticResource ActivityIndicator}" />
+
+                        </Grid>
+                    </CollectionView.EmptyView>
+                </CollectionView>
+            </RefreshView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

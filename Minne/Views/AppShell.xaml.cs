@@ -1,10 +1,10 @@
 ﻿using Xamarin.Forms;
 
-namespace Minne
+namespace Minne.Views
 {
-    public partial class MainPage : ContentPage
+    public partial class AppShell : Shell
     {
-        public MainPage()
+        public AppShell()
         {
             InitializeComponent();
         }
