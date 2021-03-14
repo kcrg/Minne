@@ -36,7 +36,13 @@
 
     <ContentPage.Content>
         <Grid>
-            <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
+            <RefreshView
+                BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight},
+                                                  Dark={StaticResource BackgroundColorDark}}"
+                Command="{Binding RefreshCommand}"
+                IsRefreshing="{Binding IsRefreshing}"
+                RefreshColor="{AppThemeBinding Light={StaticResource ContrastColorLight},
+                                               Dark={StaticResource ContrastColorDark}}">
                 <CollectionView x:Name="collectionView"
                     ItemSizingStrategy="MeasureAllItems"
                     ItemsSource="{Binding ToDoList}"
@@ -281,6 +287,32 @@
                     </CollectionView.EmptyView>
                 </CollectionView>
             </RefreshView>
+
+            <!--<sh:Shadows
+                Margin="0,0,16,64"
+                HorizontalOptions="End"
+                VerticalOptions="End"
+                CornerRadius="24">
+                <sh:Shadows.Shades>
+                    <sh:ShadeStack>
+                        <sh:Shade
+                            BlurRadius="24"
+                            Opacity="1"
+                            Offset="0,0"
+                            Color="{AppThemeBinding Light={StaticResource FirstShadowLight},
+                                                    Dark={StaticResource FirstShadowDark}}" />
+                    </sh:ShadeStack>
+                </sh:Shadows.Shades>
+
+                <controls:BaseImageButton
+                    WidthRequest="48"
+                    HeightRequest="48"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight},
+                                                      Dark={StaticResource BackgroundColorDark}}"
+                    CornerRadius="24"
+                    Glyph="{StaticResource EditIcon}"
+                    GlyphColor="White" />
+            </sh:Shadows>-->
         </Grid>
     </ContentPage.Content>
 </ContentPage>

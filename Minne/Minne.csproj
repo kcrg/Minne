@@ -22,7 +22,6 @@
   <ItemGroup>
     <PackageReference Include="Acr.UserDialogs" Version="7.1.0.481" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="Prism.Forms" Version="8.0.0.1909" />
     <PackageReference Include="Prism.DryIoc.Forms" Version="8.0.0.1909" />
     <PackageReference Include="RestSharp" Version="106.11.7" />
     <PackageReference Include="Sharpnado.Shadows" Version="1.2.0" />

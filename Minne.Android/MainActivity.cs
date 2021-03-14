@@ -59,7 +59,11 @@ namespace Minne.Droid
             window.AddFlags(Android.Views.WindowManagerFlags.DrawsSystemBarBackgrounds);
             window.ClearFlags(Android.Views.WindowManagerFlags.TranslucentStatus);
             window.SetStatusBarColor(color);
-            window.SetNavigationBarColor(color);
+
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+            {
+                window.SetNavigationBarColor(color);
+            }
 
             const Android.Views.StatusBarVisibility statusBarVisibility = (Android.Views.StatusBarVisibility)Android.Views.SystemUiFlags.LightStatusBar
                 | (Android.Views.StatusBarVisibility)Android.Views.SystemUiFlags.LightNavigationBar;

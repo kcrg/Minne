@@ -1,6 +1,5 @@
 ﻿using Minne.ViewModels;
 using System;
-using System.Linq;
 using Xamarin.Forms;
 
 namespace Minne.Views

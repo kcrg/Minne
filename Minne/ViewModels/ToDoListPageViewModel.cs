@@ -63,14 +63,20 @@ namespace Minne.ViewModels
 
         private void DeleteTask(int todoId)
         {
-            bool isSuccess = restService.DeleteToDoAsync(int.Parse(todoId.ToString()));
+            bool isSuccess = restService.DeleteToDoAsync(todoId);
 
             if (isSuccess)
             {
-                var todoToDelete = ToDoList.Single(todo => todo.Id == todoId);
-                ToDoList.Remove(todoToDelete);
+                try
+                {
+                    var todoToDelete = ToDoList.Single(todo => todo.Id == todoId);
+                    ToDoList.Remove(todoToDelete);
 
-                UserDialogs.Instance.Toast($"Task with ID {todoId} was deleted.");
+                    UserDialogs.Instance.Toast($"Task with ID {todoId} was deleted.");
+                }
+                catch
+                {
+                }
             }
         }
 

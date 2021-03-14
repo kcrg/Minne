@@ -2,7 +2,7 @@
 
     <!--  Light Colors  -->
     <Color x:Key="BackgroundColorLight">#e0e0e0</Color>
-    <Color x:Key="ContrastColorLight">Black</Color>
+    <Color x:Key="ContrastColorLight">#31344b</Color>
     <Color x:Key="MediumContrastColorLight">DarkGray</Color>
     <Color x:Key="LowContrastColorLight">LightGray</Color>
     <Color x:Key="FirstShadowLight">#ffffff</Color>
@@ -10,8 +10,8 @@
 
     <!--  Dark Colors  -->
     <Color x:Key="BackgroundColorDark">#303030</Color>
-    <Color x:Key="ContrastColorDark">White</Color>
-    <Color x:Key="MediumContrastColorDark">LightGray</Color>
+    <Color x:Key="ContrastColorDark">LightGray</Color>
+    <Color x:Key="MediumContrastColorDark">Gray</Color>
     <Color x:Key="LowContrastColorDark">DarkGray</Color>
     <Color x:Key="FirstShadowDark">#4d4d4d</Color>
     <Color x:Key="SecondShadowDark">#131313</Color>
