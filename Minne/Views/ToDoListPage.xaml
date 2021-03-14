@@ -63,7 +63,7 @@
                                                     VerticalOptions="Center"
                                                     CornerRadius="16">
                                                     <sh:Shadows.Shades>
-                                                        <sh:ImmutableShades>
+                                                        <sh:ShadeStack>
                                                             <sh:Shade
                                                                 BlurRadius="16"
                                                                 Opacity="1"
@@ -76,7 +76,7 @@
                                                                 Offset="6,6"
                                                                 Color="{AppThemeBinding Light={StaticResource SecondShadowLight},
                                                                                         Dark={StaticResource SecondShadowDark}}" />
-                                                        </sh:ImmutableShades>
+                                                        </sh:ShadeStack>
                                                     </sh:Shadows.Shades>
 
                                                     <controls:BaseImageButton
@@ -112,7 +112,7 @@
                                                     VerticalOptions="Center"
                                                     CornerRadius="16">
                                                     <sh:Shadows.Shades>
-                                                        <sh:ImmutableShades>
+                                                        <sh:ShadeStack>
                                                             <sh:Shade
                                                                 BlurRadius="16"
                                                                 Opacity="1"
@@ -125,7 +125,7 @@
                                                                 Offset="6,6"
                                                                 Color="{AppThemeBinding Light={StaticResource SecondShadowLight},
                                                                                         Dark={StaticResource SecondShadowDark}}" />
-                                                        </sh:ImmutableShades>
+                                                        </sh:ShadeStack>
                                                     </sh:Shadows.Shades>
 
                                                     <controls:BaseImageButton
@@ -159,7 +159,7 @@
                                         VerticalOptions="CenterAndExpand"
                                         CornerRadius="16">
                                         <sh:Shadows.Shades>
-                                            <sh:ImmutableShades>
+                                            <sh:ShadeStack>
                                                 <sh:Shade
                                                     BlurRadius="8"
                                                     Opacity="1"
@@ -172,7 +172,7 @@
                                                     Offset="4,2"
                                                     Color="{AppThemeBinding Light={StaticResource SecondShadowLight},
                                                                             Dark={StaticResource SecondShadowDark}}" />
-                                            </sh:ImmutableShades>
+                                            </sh:ShadeStack>
                                         </sh:Shadows.Shades>
                                         <Frame
                                             Padding="8"
@@ -213,7 +213,7 @@
                                                     VerticalOptions="CenterAndExpand"
                                                     CornerRadius="16">
                                                     <sh:Shadows.Shades>
-                                                        <sh:ImmutableShades>
+                                                        <sh:ShadeStack>
                                                             <sh:Shade
                                                                 BlurRadius="16"
                                                                 Opacity="1"
@@ -226,7 +226,7 @@
                                                                 Offset="6,6"
                                                                 Color="{AppThemeBinding Light={StaticResource SecondShadowLight},
                                                                                         Dark={StaticResource SecondShadowDark}}" />
-                                                        </sh:ImmutableShades>
+                                                        </sh:ShadeStack>
                                                     </sh:Shadows.Shades>
                                                     <controls:CheckBoxImageButton x:Name="checkBox"
                                                         WidthRequest="36"
