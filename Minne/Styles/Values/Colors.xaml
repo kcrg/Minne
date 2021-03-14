@@ -1,15 +1,19 @@
 ﻿<ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
     <!--  Light Colors  -->
-    <Color x:Key="BackgroundColorLight">White</Color>
+    <Color x:Key="BackgroundColorLight">#e0e0e0</Color>
     <Color x:Key="ContrastColorLight">Black</Color>
     <Color x:Key="MediumContrastColorLight">DarkGray</Color>
     <Color x:Key="LowContrastColorLight">LightGray</Color>
+    <Color x:Key="FirstShadowLight">#ffffff</Color>
+    <Color x:Key="SecondShadowLight">#9d9d9d</Color>
 
     <!--  Dark Colors  -->
-    <Color x:Key="BackgroundColorDark">Black</Color>
+    <Color x:Key="BackgroundColorDark">#303030</Color>
     <Color x:Key="ContrastColorDark">White</Color>
     <Color x:Key="MediumContrastColorDark">LightGray</Color>
     <Color x:Key="LowContrastColorDark">DarkGray</Color>
+    <Color x:Key="FirstShadowDark">#4d4d4d</Color>
+    <Color x:Key="SecondShadowDark">#131313</Color>
 
 </ResourceDictionary>

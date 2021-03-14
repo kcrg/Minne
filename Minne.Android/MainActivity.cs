@@ -47,7 +47,7 @@ namespace Minne.Droid
         {
             var currentTheme = Xamarin.Forms.Application.Current.RequestedTheme;
 
-            var color = currentTheme == OSAppTheme.Light ? Android.Graphics.Color.White : Android.Graphics.Color.Black;
+            var color = currentTheme == OSAppTheme.Light ? Android.Graphics.Color.ParseColor("#e0e0e0") : Android.Graphics.Color.ParseColor("#303030");
 
             var window = Platform.CurrentActivity.Window;
 

@@ -4,7 +4,6 @@ using Minne.Services;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services;
-using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -39,6 +38,7 @@ namespace Minne.ViewModels
         public DelegateCommand AddTaskCommand { get; }
         public DelegateCommand SettingsCommand { get; }
         public DelegateCommand<object> DeleteCommand { get; set; }
+        public DelegateCommand<object> CompletedCommand { get; set; }
         public DelegateCommand<IReadOnlyList<object>> ItemTappedCommand { get; }
 
         public DelegateCommand LoadCommand { get; }
@@ -55,6 +55,7 @@ namespace Minne.ViewModels
             ItemTappedCommand = new DelegateCommand<IReadOnlyList<object>>(async (o) => await ShowDetailsAsync(o, dialogService).ConfigureAwait(false));
 
             DeleteCommand = new DelegateCommand<object>((todoId) => DeleteTask(int.Parse(todoId.ToString())));
+            CompletedCommand = new DelegateCommand<object>((todoId) => SortList(int.Parse(todoId.ToString())));
 
             LoadCommand = new DelegateCommand(async () => await LoadDataAsync().ConfigureAwait(false));
             RefreshCommand = new DelegateCommand(async () => await RefreshDataAsync().ConfigureAwait(false));
@@ -69,27 +70,52 @@ namespace Minne.ViewModels
                 var todoToDelete = ToDoList.Single(todo => todo.Id == todoId);
                 ToDoList.Remove(todoToDelete);
 
-                UserDialogs.Instance.Toast($"To Do with id {todoId} was deleted.");
+                UserDialogs.Instance.Toast($"Task with ID {todoId} was deleted.");
+            }
+        }
+
+        private void SortList(int todoId)
+        {
+            var checkedTodo = ToDoList.First(x => x.Id == todoId);
+            var separatedToDos = new List<ToDoModel>();
+            foreach (var todo in ToDoList)
+            {
+                if (todo.Completed == checkedTodo.Completed && todo.Id != checkedTodo.Id)
+                {
+                    separatedToDos.Add(todo);
+                }
+            }
+
+            try
+            {
+                var closestTodo = separatedToDos.OrderBy(x => Math.Abs((long)x.Id - checkedTodo.Id)).First();
+                int closestTodoIndex = ToDoList.IndexOf(closestTodo);
+                int checkedTodoIndex = ToDoList.IndexOf(checkedTodo);
+                ToDoList.Move(checkedTodoIndex, closestTodoIndex);
+            }
+            catch
+            {
+                UserDialogs.Instance.Toast("Oops... Something went wrong, please try again.");
             }
         }
 
         public async Task ShowDetailsAsync(IReadOnlyList<object> obj, IPageDialogService dialogService)
         {
-            if (obj is null)
-            {
-                return;
-            }
+            //if (obj is null)
+            //{
+            //    return;
+            //}
 
-            var list = (List<object>)obj;
-            var todo = list.ConvertAll(item => (ToDoModel)item).ToArray();
+            //var list = (List<object>)obj;
+            //var todo = list.ConvertAll(item => (ToDoModel)item).ToArray();
 
-            if (todo == null)
-            {
-                throw new ArgumentException("Given contact is null");
-            }
-            string message = $"{todo[0].Title}\nCompleted: {todo[0].Completed}";
+            //if (todo == null)
+            //{
+            //    throw new ArgumentException("Given contact is null");
+            //}
+            //string message = $"{todo[0].Title}\nCompleted: {todo[0].Completed}";
 
-            await dialogService.DisplayAlertAsync("Task", message, "Close").ConfigureAwait(false);
+            //await dialogService.DisplayAlertAsync("Task", message, "Close").ConfigureAwait(false);
         }
 
         public async Task RefreshDataAsync()
@@ -114,7 +140,9 @@ namespace Minne.ViewModels
                 return;
             }
 
-            foreach (var todo in response)
+            var sortedList = response.OrderBy(x => x.Completed);
+
+            foreach (var todo in sortedList)
             {
                 ToDoList.Add(todo);
             }

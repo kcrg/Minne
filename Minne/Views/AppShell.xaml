@@ -10,8 +10,8 @@
     Shell.FlyoutBehavior="Disabled"
     Shell.ForegroundColor="{AppThemeBinding Light={StaticResource ContrastColorLight},
                                             Dark={StaticResource ContrastColorDark}}"
-    Shell.TabBarUnselectedColor="{AppThemeBinding Light={StaticResource LowContrastColorLight},
-                                                  Dark={StaticResource LowContrastColorDark}}"
+    Shell.TabBarUnselectedColor="{AppThemeBinding Light={StaticResource MediumContrastColorLight},
+                                                  Dark={StaticResource MediumContrastColorDark}}"
     Shell.TitleColor="{AppThemeBinding Light={StaticResource ContrastColorLight},
                                        Dark={StaticResource ContrastColorDark}}"
     Visual="Material">

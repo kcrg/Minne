@@ -1,5 +1,6 @@
 ﻿using Minne.ViewModels;
 using System;
+using System.Linq;
 using Xamarin.Forms;
 
 namespace Minne.Views
@@ -45,6 +46,18 @@ namespace Minne.Views
 
             //string contactJson = JsonConvert.SerializeObject(contactToEdit);
             //MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.GoToAsync($"todolist/todocreate?entry={""}").ConfigureAwait(false));
+        }
+
+        private void Completed(object sender, EventArgs e)
+        {
+            var btn = (ImageButton)sender;
+
+            if ((BindingContext is ToDoListPageViewModel vm) && vm.CompletedCommand.CanExecute(btn.CommandParameter))
+            {
+                vm.CompletedCommand.Execute(btn.CommandParameter);
+
+                //collectionView.ScrollTo(vm.ToDoList.IndexOf(vm.ToDoList.First(x => x.Id == (int)btn.CommandParameter)), position: ScrollToPosition.Center);
+            }
         }
     }
 }

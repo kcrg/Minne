@@ -24,8 +24,6 @@
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource BackgroundColorLight}, Dark={StaticResource BackgroundColorDark}}" />
         <Setter Property="HeightRequest" Value="42" />
         <Setter Property="WidthRequest" Value="42" />
-        <Setter Property="VerticalOptions" Value="Center" />
-        <Setter Property="HorizontalOptions" Value="Center" />
     </Style>
 
     <Style x:Key="ListImageButton"

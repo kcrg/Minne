@@ -19,6 +19,7 @@ namespace Minne
         protected override void OnInitialized()
         {
             InitializeComponent();
+            Sharpnado.Shades.Initializer.Initialize(loggerEnable: false);
 
             MainPage = new AppShell();
 

@@ -5,6 +5,7 @@
     xmlns:controls="clr-namespace:Minne.Controls"
     xmlns:models="clr-namespace:Minne.Models"
     xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+    xmlns:sh="http://sharpnado.com"
     xmlns:viewmodels="clr-namespace:Minne.ViewModels"
     Title="Tasks"
     prism:ViewModelLocator.AutowireViewModel="True"
@@ -39,9 +40,10 @@
                 <CollectionView x:Name="collectionView"
                     ItemSizingStrategy="MeasureAllItems"
                     ItemsSource="{Binding ToDoList}"
-                    SelectionMode="Single">
+                    SelectionMode="None"
+                    VerticalScrollBarVisibility="Always">
                     <CollectionView.ItemsLayout>
-                        <LinearItemsLayout ItemSpacing="8" Orientation="Vertical" />
+                        <LinearItemsLayout ItemSpacing="0" Orientation="Vertical" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.Behaviors>
                         <behaviors:EventToCommandBehavior
@@ -51,70 +53,210 @@
                     </CollectionView.Behaviors>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:ToDoModel">
-                            <StackLayout Padding="8,2,8,2">
-                                <Frame
-                                    Padding="8"
-                                    BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight},
-                                                                      Dark={StaticResource BackgroundColorDark}}"
-                                    CornerRadius="0">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="64*" />
-                                            <ColumnDefinition Width="12*" />
-                                            <ColumnDefinition Width="12*" />
-                                            <ColumnDefinition Width="12*" />
-                                        </Grid.ColumnDefinitions>
+                            <SwipeView Threshold="48">
+                                <SwipeView.LeftItems>
+                                    <SwipeItems>
+                                        <SwipeItemView>
+                                            <Grid WidthRequest="64">
+                                                <sh:Shadows
+                                                    HorizontalOptions="Center"
+                                                    VerticalOptions="Center"
+                                                    CornerRadius="16">
+                                                    <sh:Shadows.Shades>
+                                                        <sh:ImmutableShades>
+                                                            <sh:Shade
+                                                                BlurRadius="16"
+                                                                Opacity="1"
+                                                                Offset="-6,-6"
+                                                                Color="{AppThemeBinding Light={StaticResource FirstShadowLight},
+                                                                                        Dark={StaticResource FirstShadowDark}}" />
+                                                            <sh:Shade
+                                                                BlurRadius="16"
+                                                                Opacity="1"
+                                                                Offset="6,6"
+                                                                Color="{AppThemeBinding Light={StaticResource SecondShadowLight},
+                                                                                        Dark={StaticResource SecondShadowDark}}" />
+                                                        </sh:ImmutableShades>
+                                                    </sh:Shadows.Shades>
 
-                                        <Label
-                                            Margin="-2,-4,0,0"
-                                            HorizontalOptions="Start"
-                                            VerticalOptions="Start"
-                                            FontSize="8"
-                                            Text="{Binding Id}"
-                                            TextColor="LightGray" />
+                                                    <controls:BaseImageButton
+                                                        WidthRequest="36"
+                                                        HeightRequest="36"
+                                                        Padding="8"
+                                                        BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight},
+                                                                                          Dark={StaticResource BackgroundColorDark}}"
+                                                        Clicked="Delete"
+                                                        CommandParameter="{Binding Id}"
+                                                        CornerRadius="16"
+                                                        Glyph="{StaticResource DeleteIcon}"
+                                                        GlyphColor="{AppThemeBinding Light={StaticResource ContrastColorLight},
+                                                                                     Dark={StaticResource ContrastColorDark}}">
+                                                        <controls:BaseImageButton.Background>
+                                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                                <GradientStop Offset="0.0" Color="{AppThemeBinding Light={StaticResource FirstShadowLight}, Dark={StaticResource FirstShadowDark}}" />
+                                                                <GradientStop Offset="1.0" Color="{AppThemeBinding Light={StaticResource SecondShadowLight}, Dark={StaticResource SecondShadowDark}}" />
+                                                            </LinearGradientBrush>
+                                                        </controls:BaseImageButton.Background>
+                                                    </controls:BaseImageButton>
+                                                </sh:Shadows>
+                                            </Grid>
+                                        </SwipeItemView>
+                                    </SwipeItems>
+                                </SwipeView.LeftItems>
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
+                                        <SwipeItemView>
+                                            <Grid WidthRequest="64">
+                                                <sh:Shadows
+                                                    HorizontalOptions="Center"
+                                                    VerticalOptions="Center"
+                                                    CornerRadius="16">
+                                                    <sh:Shadows.Shades>
+                                                        <sh:ImmutableShades>
+                                                            <sh:Shade
+                                                                BlurRadius="16"
+                                                                Opacity="1"
+                                                                Offset="-6,-6"
+                                                                Color="{AppThemeBinding Light={StaticResource FirstShadowLight},
+                                                                                        Dark={StaticResource FirstShadowDark}}" />
+                                                            <sh:Shade
+                                                                BlurRadius="16"
+                                                                Opacity="1"
+                                                                Offset="6,6"
+                                                                Color="{AppThemeBinding Light={StaticResource SecondShadowLight},
+                                                                                        Dark={StaticResource SecondShadowDark}}" />
+                                                        </sh:ImmutableShades>
+                                                    </sh:Shadows.Shades>
 
-                                        <Label
-                                            Grid.Column="0"
-                                            Margin="8"
-                                            Style="{StaticResource ToDoLabelStyle}"
-                                            Text="{Binding Title}">
-                                            <Label.Triggers>
-                                                <DataTrigger
-                                                    Binding="{Binding Source={x:Reference checkBox}, Path=IsChecked}"
-                                                    TargetType="Label"
-                                                    Value="True">
-                                                    <Setter Property="TextDecorations" Value="Strikethrough" />
-                                                </DataTrigger>
-                                                <DataTrigger
-                                                    Binding="{Binding Source={x:Reference checkBox}, Path=IsChecked}"
-                                                    TargetType="Label"
-                                                    Value="False">
-                                                    <Setter Property="TextDecorations" Value="None" />
-                                                </DataTrigger>
-                                            </Label.Triggers>
-                                        </Label>
+                                                    <controls:BaseImageButton
+                                                        WidthRequest="36"
+                                                        HeightRequest="36"
+                                                        Padding="8"
+                                                        BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight},
+                                                                                          Dark={StaticResource BackgroundColorDark}}"
+                                                        Clicked="Edit"
+                                                        CommandParameter="{Binding Id}"
+                                                        CornerRadius="16"
+                                                        Glyph="{StaticResource EditIcon}"
+                                                        GlyphColor="{AppThemeBinding Light={StaticResource ContrastColorLight},
+                                                                                     Dark={StaticResource ContrastColorDark}}">
+                                                        <controls:BaseImageButton.Background>
+                                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                                <GradientStop Offset="0.0" Color="{AppThemeBinding Light={StaticResource FirstShadowLight}, Dark={StaticResource FirstShadowDark}}" />
+                                                                <GradientStop Offset="1.0" Color="{AppThemeBinding Light={StaticResource SecondShadowLight}, Dark={StaticResource SecondShadowDark}}" />
+                                                            </LinearGradientBrush>
+                                                        </controls:BaseImageButton.Background>
+                                                    </controls:BaseImageButton>
+                                                </sh:Shadows>
+                                            </Grid>
+                                        </SwipeItemView>
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+                                <!--  Content  -->
+                                <StackLayout Padding="16,9,16,9">
+                                    <sh:Shadows
+                                        HorizontalOptions="CenterAndExpand"
+                                        VerticalOptions="CenterAndExpand"
+                                        CornerRadius="16">
+                                        <sh:Shadows.Shades>
+                                            <sh:ImmutableShades>
+                                                <sh:Shade
+                                                    BlurRadius="8"
+                                                    Opacity="1"
+                                                    Offset="-4,-2"
+                                                    Color="{AppThemeBinding Light={StaticResource FirstShadowLight},
+                                                                            Dark={StaticResource FirstShadowDark}}" />
+                                                <sh:Shade
+                                                    BlurRadius="10"
+                                                    Opacity="1"
+                                                    Offset="4,2"
+                                                    Color="{AppThemeBinding Light={StaticResource SecondShadowLight},
+                                                                            Dark={StaticResource SecondShadowDark}}" />
+                                            </sh:ImmutableShades>
+                                        </sh:Shadows.Shades>
+                                        <Frame
+                                            Padding="8"
+                                            BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight},
+                                                                              Dark={StaticResource BackgroundColorDark}}"
+                                            CornerRadius="16"
+                                            HasShadow="False">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="12*" />
+                                                    <ColumnDefinition Width="88*" />
+                                                </Grid.ColumnDefinitions>
 
-                                        <controls:CheckBoxImageButton x:Name="checkBox"
-                                            Grid.Column="1"
-                                            IsChecked="{Binding Completed}"
-                                            Style="{StaticResource CheckBoxImageButton}" />
+                                                <Label
+                                                    Grid.Column="1"
+                                                    Margin="8"
+                                                    Style="{StaticResource ToDoLabelStyle}"
+                                                    Text="{Binding Title}">
+                                                    <Label.Triggers>
+                                                        <DataTrigger
+                                                            Binding="{Binding Source={x:Reference checkBox}, Path=IsChecked}"
+                                                            TargetType="Label"
+                                                            Value="True">
+                                                            <Setter Property="TextDecorations" Value="Strikethrough" />
+                                                        </DataTrigger>
+                                                        <DataTrigger
+                                                            Binding="{Binding Source={x:Reference checkBox}, Path=IsChecked}"
+                                                            TargetType="Label"
+                                                            Value="False">
+                                                            <Setter Property="TextDecorations" Value="None" />
+                                                        </DataTrigger>
+                                                    </Label.Triggers>
+                                                </Label>
 
-                                        <controls:BaseImageButton
-                                            Grid.Column="2"
-                                            Clicked="Edit"
-                                            CommandParameter="{Binding Id}"
-                                            Glyph="{StaticResource EditIcon}"
-                                            Style="{StaticResource ListImageButton}" />
+                                                <sh:Shadows
+                                                    Grid.Column="0"
+                                                    HorizontalOptions="CenterAndExpand"
+                                                    VerticalOptions="CenterAndExpand"
+                                                    CornerRadius="16">
+                                                    <sh:Shadows.Shades>
+                                                        <sh:ImmutableShades>
+                                                            <sh:Shade
+                                                                BlurRadius="16"
+                                                                Opacity="1"
+                                                                Offset="-6,-6"
+                                                                Color="{AppThemeBinding Light={StaticResource FirstShadowLight},
+                                                                                        Dark={StaticResource FirstShadowDark}}" />
+                                                            <sh:Shade
+                                                                BlurRadius="16"
+                                                                Opacity="1"
+                                                                Offset="6,6"
+                                                                Color="{AppThemeBinding Light={StaticResource SecondShadowLight},
+                                                                                        Dark={StaticResource SecondShadowDark}}" />
+                                                        </sh:ImmutableShades>
+                                                    </sh:Shadows.Shades>
+                                                    <controls:CheckBoxImageButton x:Name="checkBox"
+                                                        WidthRequest="36"
+                                                        HeightRequest="36"
+                                                        Padding="8"
+                                                        HorizontalOptions="Center"
+                                                        VerticalOptions="Center"
+                                                        BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight},
+                                                                                          Dark={StaticResource BackgroundColorDark}}"
+                                                        Clicked="Completed"
+                                                        CommandParameter="{Binding Id}"
+                                                        CornerRadius="16"
+                                                        IsChecked="{Binding Completed}"
+                                                        Color="{AppThemeBinding Light={StaticResource ContrastColorLight},
+                                                                                Dark={StaticResource ContrastColorDark}}" />
+                                                </sh:Shadows>
 
-                                        <controls:BaseImageButton
-                                            Grid.Column="3"
-                                            Clicked="Delete"
-                                            CommandParameter="{Binding Id}"
-                                            Glyph="{StaticResource DeleteIcon}"
-                                            Style="{StaticResource ListImageButton}" />
-                                    </Grid>
-                                </Frame>
-                            </StackLayout>
+                                                <Label
+                                                    Grid.ColumnSpan="3"
+                                                    Margin="-2,-4,0,0"
+                                                    HorizontalOptions="End"
+                                                    VerticalOptions="Start"
+                                                    FontSize="8"
+                                                    Text="{Binding Id}"
+                                                    TextColor="DarkGray" />
+                                            </Grid>
+                                        </Frame>
+                                    </sh:Shadows>
+                                </StackLayout>
+                            </SwipeView>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                     <CollectionView.EmptyView>
