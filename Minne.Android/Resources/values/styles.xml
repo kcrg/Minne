@@ -4,6 +4,11 @@
   <style name="MainTheme" parent="MainTheme.Base">
     <item name="android:forceDarkAllowed">false</item>
 
+    <item name="android:colorEdgeEffect">@color/icon_foreground</item>
+
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorAccent">@color/colorAccent</item>
     <!-- Set theme colors from https://aka.ms/material-colors -->
   </style>
 

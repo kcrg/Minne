@@ -3,7 +3,6 @@ using Minne.Models;
 using Minne.Services;
 using Prism.Commands;
 using Prism.Mvvm;
-using Prism.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -36,34 +35,78 @@ namespace Minne.ViewModels
 
         public ObservableCollection<ToDoModel> ToDoList { get; set; }
         public DelegateCommand AddTaskCommand { get; }
-        public DelegateCommand SettingsCommand { get; }
         public DelegateCommand<object> DeleteCommand { get; set; }
         public DelegateCommand<object> CompletedCommand { get; set; }
-        public DelegateCommand<IReadOnlyList<object>> ItemTappedCommand { get; }
-
-        public DelegateCommand LoadCommand { get; }
         public DelegateCommand RefreshCommand { get; }
 
-        public ToDoListPageViewModel(IPageDialogService dialogService, IRestService restService)
+        public ToDoListPageViewModel(IRestService restService)
         {
             this.restService = restService;
 
             ToDoList = new ObservableCollection<ToDoModel>();
 
             AddTaskCommand = new DelegateCommand(() => MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.GoToAsync("todolist/todocreate").ConfigureAwait(false)));
-            SettingsCommand = new DelegateCommand(() => MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.GoToAsync("todolist/settings").ConfigureAwait(false)));
-            ItemTappedCommand = new DelegateCommand<IReadOnlyList<object>>(async (o) => await ShowDetailsAsync(o, dialogService).ConfigureAwait(false));
 
             DeleteCommand = new DelegateCommand<object>((todoId) => DeleteTask(int.Parse(todoId.ToString())));
             CompletedCommand = new DelegateCommand<object>((todoId) => SortList(int.Parse(todoId.ToString())));
 
-            LoadCommand = new DelegateCommand(async () => await LoadDataAsync().ConfigureAwait(false));
             RefreshCommand = new DelegateCommand(async () => await RefreshDataAsync().ConfigureAwait(false));
+        }
+
+        public void AddTaskToList(ToDoModel toDoModel)
+        {
+            try
+            {
+                bool isSuccess = restService.CreateToDo(toDoModel);
+
+                if (isSuccess)
+                {
+                    ToDoList.Add(toDoModel);
+                    SortList(toDoModel.Id);
+
+                    UserDialogs.Instance.Toast($"Task with ID {toDoModel.Id} was created.");
+                }
+            }
+            catch
+            {
+                UserDialogs.Instance.Toast("Oops... Something went wrong, please try again.");
+            }
+        }
+
+        public void UpdateTask(ToDoModel toDoModel)
+        {
+            try
+            {
+                int taskToUpdateIndex = ToDoList.ToList().FindIndex(x => x.Id == toDoModel.Id);
+
+                if (ToDoList.First(x => x.Id == toDoModel.Id).Title == toDoModel.Title)
+                {
+                    UserDialogs.Instance.Toast("There is nothing to update.");
+                    return;
+                }
+
+                bool isSuccess = restService.UpdateToDo(toDoModel);
+
+                if (isSuccess)
+                {
+                    ToDoList[taskToUpdateIndex] = toDoModel;
+
+                    UserDialogs.Instance.Toast($"Task with ID {toDoModel.Id} was updated.");
+                }
+                else
+                {
+                    UserDialogs.Instance.Toast("This task ID is higher than any task in placeholder REST server, task can not be updated.");
+                }
+            }
+            catch
+            {
+                UserDialogs.Instance.Toast("Oops... Something went wrong, please try again.");
+            }
         }
 
         private void DeleteTask(int todoId)
         {
-            bool isSuccess = restService.DeleteToDoAsync(todoId);
+            bool isSuccess = restService.DeleteToDo(todoId);
 
             if (isSuccess)
             {
@@ -82,46 +125,62 @@ namespace Minne.ViewModels
 
         private void SortList(int todoId)
         {
-            var checkedTodo = ToDoList.First(x => x.Id == todoId);
-            var separatedToDos = new List<ToDoModel>();
-            foreach (var todo in ToDoList)
-            {
-                if (todo.Completed == checkedTodo.Completed && todo.Id != checkedTodo.Id)
-                {
-                    separatedToDos.Add(todo);
-                }
-            }
-
             try
             {
-                var closestTodo = separatedToDos.OrderBy(x => Math.Abs((long)x.Id - checkedTodo.Id)).First();
-                int closestTodoIndex = ToDoList.IndexOf(closestTodo);
+                var checkedTodo = ToDoList.First(x => x.Id == todoId);
+                var separatedToDos = new List<ToDoModel>();
+                foreach (var todo in ToDoList)
+                {
+                    if (todo.Completed == checkedTodo.Completed && todo.Id != checkedTodo.Id)
+                    {
+                        separatedToDos.Add(todo);
+                    }
+                }
+
+                var prevTodo = separatedToDos.LastOrDefault(t => t.Id < checkedTodo.Id);
+                var nextTodo = separatedToDos.Find(t => t.Id > checkedTodo.Id);
+                int prevTodoIndex = ToDoList.IndexOf(prevTodo);
+                int nextTodoIndex = ToDoList.IndexOf(nextTodo);
                 int checkedTodoIndex = ToDoList.IndexOf(checkedTodo);
-                ToDoList.Move(checkedTodoIndex, closestTodoIndex);
+
+                if (prevTodoIndex >= ToDoList.Count - 1)
+                {
+                    ToDoList.Remove(checkedTodo);
+                    ToDoList.Add(checkedTodo);
+                }
+                else if (prevTodoIndex >= 0 && nextTodoIndex >= 0)
+                {
+                    if (checkedTodoIndex < prevTodoIndex && prevTodoIndex >= 0)
+                    {
+                        ToDoList.Remove(checkedTodo);
+                        ToDoList.Insert(prevTodoIndex, checkedTodo);
+                    }
+                    else if (checkedTodoIndex > nextTodoIndex && nextTodoIndex >= 0)
+                    {
+                        ToDoList.Remove(checkedTodo);
+                        ToDoList.Insert(nextTodoIndex, checkedTodo);
+                    }
+                }
+                else if (prevTodoIndex < 0)
+                {
+                    if (nextTodoIndex == 0)
+                    {
+                        ToDoList.Move(checkedTodoIndex, nextTodoIndex);
+                    }
+                    else
+                    {
+                        ToDoList.Move(checkedTodoIndex, nextTodoIndex - 1);
+                    }
+                }
+                else if (nextTodoIndex < 0)
+                {
+                    ToDoList.Move(checkedTodoIndex, prevTodoIndex + 1);
+                }
             }
-            catch
+            catch (Exception)
             {
                 UserDialogs.Instance.Toast("Oops... Something went wrong, please try again.");
             }
-        }
-
-        public async Task ShowDetailsAsync(IReadOnlyList<object> obj, IPageDialogService dialogService)
-        {
-            //if (obj is null)
-            //{
-            //    return;
-            //}
-
-            //var list = (List<object>)obj;
-            //var todo = list.ConvertAll(item => (ToDoModel)item).ToArray();
-
-            //if (todo == null)
-            //{
-            //    throw new ArgumentException("Given contact is null");
-            //}
-            //string message = $"{todo[0].Title}\nCompleted: {todo[0].Completed}";
-
-            //await dialogService.DisplayAlertAsync("Task", message, "Close").ConfigureAwait(false);
         }
 
         public async Task RefreshDataAsync()
@@ -146,9 +205,7 @@ namespace Minne.ViewModels
                 return;
             }
 
-            var sortedList = response.OrderBy(x => x.Completed);
-
-            foreach (var todo in sortedList)
+            foreach (var todo in response.OrderBy(x => x.Completed))
             {
                 ToDoList.Add(todo);
             }

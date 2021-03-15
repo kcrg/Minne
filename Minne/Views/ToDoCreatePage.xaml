@@ -1,0 +1,132 @@
+﻿<ContentPage x:Class="Minne.Views.ToDoCreatePage" x:DataType="viewmodels:ToDoCreatePageViewModel"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Minne.Controls"
+    xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+    xmlns:sh="http://sharpnado.com"
+    xmlns:viewmodels="clr-namespace:Minne.ViewModels"
+    Title="Add/Edit"
+    prism:ViewModelLocator.AutowireViewModel="True"
+    BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight},
+                                      Dark={StaticResource BackgroundColorDark}}"
+    Shell.PresentationMode="Animated"
+    Visual="Material">
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior Command="{Binding BackCommand}">
+            <BackButtonBehavior.IconOverride>
+                <FontImageSource
+                    FontFamily="FontIcons"
+                    Glyph="{StaticResource BackIcon}"
+                    Size="64" />
+            </BackButtonBehavior.IconOverride>
+        </BackButtonBehavior>
+    </Shell.BackButtonBehavior>
+
+    <ContentPage.ToolbarItems>
+        <controls:BaseToolbarItem Command="{Binding SaveContactCommand}" Glyph="{StaticResource SaveIcon}" />
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <Grid Padding="20">
+            <Label x:Name="welcomeLabel"
+                Margin="0,25,0,0"
+                HorizontalOptions="Center"
+                VerticalOptions="Start"
+                FontSize="24"
+                HorizontalTextAlignment="Center"
+                Style="{StaticResource ListLabel}"
+                Text="{Binding Id, Mode=OneWayToSource}">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="You are changing task&#x0a;with ID " />
+                        <Span x:Name="IDLabel" Text="{Binding Id, Mode=OneWayToSource}" />
+                        <Span Text="." />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <StackLayout VerticalOptions="Center">
+                <sh:Shadows CornerRadius="16">
+                    <sh:Shadows.Shades>
+                        <sh:ShadeStack>
+                            <sh:Shade
+                                BlurRadius="16"
+                                Opacity="1"
+                                Offset="-8,-8"
+                                Color="{AppThemeBinding Light={StaticResource FirstShadowLight},
+                                                        Dark={StaticResource FirstShadowDark}}" />
+                            <sh:Shade
+                                BlurRadius="16"
+                                Opacity="1"
+                                Offset="8,8"
+                                Color="{AppThemeBinding Light={StaticResource SecondShadowLight},
+                                                        Dark={StaticResource SecondShadowDark}}" />
+                        </sh:ShadeStack>
+                    </sh:Shadows.Shades>
+
+                    <Frame
+                        Padding="16,8,16,16"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight},
+                                                          Dark={StaticResource BackgroundColorDark}}"
+                        CornerRadius="16"
+                        HasShadow="False">
+                        <Grid>
+
+                            <Editor x:Name="TitleEntry"
+                                AutoSize="TextChanges"
+                                BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight},
+                                                                  Dark={StaticResource BackgroundColorDark}}"
+                                Keyboard="Text"
+                                Placeholder="Task"
+                                PlaceholderColor="{AppThemeBinding Light={StaticResource ContrastColorLight},
+                                                                   Dark={StaticResource ContrastColorDark}}"
+                                Text="{Binding Title}"
+                                TextColor="{AppThemeBinding Light={StaticResource ContrastColorLight},
+                                                            Dark={StaticResource ContrastColorDark}}" />
+
+                            <sh:Shadows x:Name="checkBoxWithShadows"
+                                Margin="0,0,-8,0"
+                                HorizontalOptions="End"
+                                VerticalOptions="Start"
+                                CornerRadius="16">
+                                <sh:Shadows.Shades>
+                                    <sh:ShadeStack>
+                                        <sh:Shade
+                                            BlurRadius="16"
+                                            Opacity="1"
+                                            Offset="-6,-6"
+                                            Color="{AppThemeBinding Light={StaticResource FirstShadowLight},
+                                                                    Dark={StaticResource FirstShadowDark}}" />
+                                        <sh:Shade
+                                            BlurRadius="16"
+                                            Opacity="1"
+                                            Offset="6,6"
+                                            Color="{AppThemeBinding Light={StaticResource SecondShadowLight},
+                                                                    Dark={StaticResource SecondShadowDark}}" />
+                                    </sh:ShadeStack>
+                                </sh:Shadows.Shades>
+                                <controls:CheckBoxImageButton x:Name="checkBox"
+                                    WidthRequest="24"
+                                    HeightRequest="24"
+                                    Padding="6"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight},
+                                                                      Dark={StaticResource BackgroundColorDark}}"
+                                    CornerRadius="16"
+                                    IsChecked="{Binding Completed, Mode=OneWayToSource}"
+                                    IsEnabled="False"
+                                    Color="{AppThemeBinding Light={StaticResource ContrastColorLight},
+                                                            Dark={StaticResource ContrastColorDark}}" />
+                            </sh:Shadows>
+
+
+                        </Grid>
+
+                    </Frame>
+                </sh:Shadows>
+
+                <Label Text="{Binding ValidateMessage}" TextColor="{AppThemeBinding Light=#f06565, Dark=#a32f2f}" />
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

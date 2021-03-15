@@ -1,7 +1,6 @@
 ﻿<ContentPage x:Class="Minne.Views.ToDoListPage" x:DataType="viewmodels:ToDoListPageViewModel"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:behaviors="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
     xmlns:controls="clr-namespace:Minne.Controls"
     xmlns:models="clr-namespace:Minne.Models"
     xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
@@ -11,6 +10,7 @@
     prism:ViewModelLocator.AutowireViewModel="True"
     BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight},
                                       Dark={StaticResource BackgroundColorDark}}"
+    Shell.PresentationMode="Animated"
     Visual="Material">
     <ContentPage.ToolbarItems>
         <controls:BaseToolbarItem Command="{Binding AddTaskCommand}" Glyph="{StaticResource AddIcon}" />
@@ -51,12 +51,6 @@
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout ItemSpacing="0" Orientation="Vertical" />
                     </CollectionView.ItemsLayout>
-                    <CollectionView.Behaviors>
-                        <behaviors:EventToCommandBehavior
-                            Command="{Binding ItemTappedCommand}"
-                            EventArgsParameterPath="CurrentSelection"
-                            EventName="SelectionChanged" />
-                    </CollectionView.Behaviors>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:ToDoModel">
                             <SwipeView Threshold="48">
@@ -141,7 +135,7 @@
                                                         BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight},
                                                                                           Dark={StaticResource BackgroundColorDark}}"
                                                         Clicked="Edit"
-                                                        CommandParameter="{Binding Id}"
+                                                        CommandParameter="{Binding .}"
                                                         CornerRadius="16"
                                                         Glyph="{StaticResource EditIcon}"
                                                         GlyphColor="{AppThemeBinding Light={StaticResource ContrastColorLight},

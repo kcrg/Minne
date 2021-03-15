@@ -1,28 +1,65 @@
-﻿using Minne.ViewModels;
+﻿using Minne.Models;
+using Minne.ViewModels;
+using Newtonsoft.Json;
 using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Minne.Views
 {
+    [QueryProperty("Entry", "entry")]
     public partial class ToDoListPage : ContentPage
     {
+        private string? Json;
+
+        public string Entry
+        {
+            set => Json = Uri.UnescapeDataString(value);
+        }
+
         public ToDoListPage()
         {
             InitializeComponent();
+
+            Task.Run(async () => await LoadToDosAsync().ConfigureAwait(false));
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
 
-            LoadDatabase();
+            if (string.IsNullOrEmpty(Json))
+            {
+                return;
+            }
+
+            if (BindingContext is ToDoListPageViewModel vm)
+            {
+                var todo = JsonConvert.DeserializeObject<ToDoModel>(Json);
+                bool isItemExists = vm.ToDoList.Any(t => t.Id == todo.Id);
+                bool isTheSameItemExists = vm.ToDoList.Any(t => t.Title == todo.Title);
+
+                if (isItemExists && !isTheSameItemExists)
+                {
+                    vm.UpdateTask(todo);
+                }
+                else if(!isTheSameItemExists)
+                {
+                    todo.Id = vm.ToDoList.Max(p => p.Id) + 1;
+                    vm.AddTaskToList(todo);
+
+                    collectionView.ScrollTo(todo, position: ScrollToPosition.Center, animate: false);
+                }
+            }
         }
 
-        private void LoadDatabase()
+        private async Task LoadToDosAsync()
         {
-            if ((BindingContext is ToDoListPageViewModel vm) && vm.LoadCommand.CanExecute())
+            if (BindingContext is ToDoListPageViewModel vm)
             {
-                vm.LoadCommand.Execute();
+                await vm.LoadDataAsync().ConfigureAwait(false);
             }
         }
 
@@ -38,13 +75,11 @@ namespace Minne.Views
 
         private void Edit(object sender, EventArgs e)
         {
-            //var btn = (ImageButton)sender;
+            var btn = (ImageButton)sender;
+            var todoToEdit = btn.CommandParameter as ToDoModel;
 
-            //int ID = int.Parse(btn.CommandParameter.ToString());
-            //ToDoModel contactToEdit = await App.Database.GetContactAsync(ID).ConfigureAwait(false);
-
-            //string contactJson = JsonConvert.SerializeObject(contactToEdit);
-            //MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.GoToAsync($"todolist/todocreate?entry={""}").ConfigureAwait(false));
+            string todoJson = JsonConvert.SerializeObject(todoToEdit);
+            MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.GoToAsync($"todolist/todocreate?entry={todoJson}").ConfigureAwait(false));
         }
 
         private void Completed(object sender, EventArgs e)
@@ -55,7 +90,7 @@ namespace Minne.Views
             {
                 vm.CompletedCommand.Execute(btn.CommandParameter);
 
-                //collectionView.ScrollTo(vm.ToDoList.IndexOf(vm.ToDoList.First(x => x.Id == (int)btn.CommandParameter)), position: ScrollToPosition.Center);
+                collectionView.ScrollTo(vm.ToDoList.First(x => x.Id == (int)btn.CommandParameter), position: ScrollToPosition.Center, animate: false);
             }
         }
     }

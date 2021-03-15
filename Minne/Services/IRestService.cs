@@ -8,8 +8,8 @@ namespace Minne.Services
     {
         Task<List<ToDoModel>> GetToDosAsync();
         Task<ToDoModel> GetToDoAsync(int id);
-        bool CreateToDoAsync(ToDoModel contact);
-        bool UpdateToDoAsync(ToDoModel contact);
-        bool DeleteToDoAsync(int id);
+        bool CreateToDo(ToDoModel contact);
+        bool UpdateToDo(ToDoModel contact);
+        bool DeleteToDo(int id);
     }
 }

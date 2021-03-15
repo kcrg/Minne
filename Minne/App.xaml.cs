@@ -1,5 +1,6 @@
 ﻿using Minne.Services;
 using Minne.Services.Implementations;
+using Minne.ViewModels;
 using Minne.Views;
 using Prism;
 using Prism.Ioc;
@@ -24,7 +25,7 @@ namespace Minne
             MainPage = new AppShell();
 
             Routing.RegisterRoute("about", typeof(AboutPage));
-            //Routing.RegisterRoute("about/settings", typeof(SettingsPage));
+            Routing.RegisterRoute("todolist/todocreate", typeof(ToDoCreatePage));
 
             Routing.RegisterRoute("todolist", typeof(ToDoListPage));
         }
@@ -46,6 +47,8 @@ namespace Minne
             containerRegistry.Register(typeof(IRestService), typeof(RestService));
 
             containerRegistry.RegisterForNavigation<AppShell>();
+            containerRegistry.RegisterForNavigation<ToDoListPage, ToDoListPageViewModel>();
+            containerRegistry.RegisterForNavigation<ToDoCreatePage, ToDoCreatePageViewModel>();
         }
     }
 }

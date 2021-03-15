@@ -21,7 +21,7 @@
             <ShellContent ContentTemplate="{DataTemplate views:ToDoListPage}" />
         </controls:BaseShellTab>
 
-        <controls:BaseShellTab Title="About" Glyph="{StaticResource AboutIcon}">
+        <controls:BaseShellTab Title="Author" Glyph="{StaticResource AboutIcon}">
             <ShellContent ContentTemplate="{DataTemplate views:AboutPage}" />
         </controls:BaseShellTab>
     </TabBar>
