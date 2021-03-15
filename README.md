@@ -1,4 +1,8 @@
 # Minne
+
+Known issues: backward navigation dont have animation.
+https://github.com/xamarin/Xamarin.Forms/issues/10638
+
 <table>
   <thead>
     <tr>
