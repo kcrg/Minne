@@ -67,9 +67,9 @@ namespace Minne.Views
         {
             var btn = (ImageButton)sender;
 
-            if ((BindingContext is ToDoListPageViewModel vm) && vm.DeleteCommand.CanExecute(btn.CommandParameter))
+            if ((BindingContext is ToDoListPageViewModel vm) && btn.CommandParameter is ToDoModel toDoModel && vm.DeleteCommand.CanExecute(toDoModel))
             {
-                vm.DeleteCommand.Execute(btn.CommandParameter);
+                vm.DeleteCommand.Execute(toDoModel);
             }
         }
 
@@ -86,11 +86,11 @@ namespace Minne.Views
         {
             var btn = (ImageButton)sender;
 
-            if ((BindingContext is ToDoListPageViewModel vm) && vm.CompletedCommand.CanExecute(btn.CommandParameter))
+            if ((BindingContext is ToDoListPageViewModel vm) && btn.CommandParameter is ToDoModel toDoModel && vm.CompletedCommand.CanExecute(toDoModel))
             {
-                vm.CompletedCommand.Execute(btn.CommandParameter);
+                vm.CompletedCommand.Execute(toDoModel);
 
-                collectionView.ScrollTo(vm.ToDoList.First(x => x.Id == (int)btn.CommandParameter), position: ScrollToPosition.Center, animate: false);
+                collectionView.ScrollTo(toDoModel, position: ScrollToPosition.Center, animate: false);
             }
         }
     }

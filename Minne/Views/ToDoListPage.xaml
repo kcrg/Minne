@@ -86,7 +86,7 @@
                                                         BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight},
                                                                                           Dark={StaticResource BackgroundColorDark}}"
                                                         Clicked="Delete"
-                                                        CommandParameter="{Binding Id}"
+                                                        CommandParameter="{Binding .}"
                                                         CornerRadius="16"
                                                         Glyph="{StaticResource DeleteIcon}"
                                                         GlyphColor="{AppThemeBinding Light={StaticResource ContrastColorLight},
@@ -237,7 +237,7 @@
                                                         BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight},
                                                                                           Dark={StaticResource BackgroundColorDark}}"
                                                         Clicked="Completed"
-                                                        CommandParameter="{Binding Id}"
+                                                        CommandParameter="{Binding .}"
                                                         CornerRadius="16"
                                                         IsChecked="{Binding Completed}"
                                                         Color="{AppThemeBinding Light={StaticResource ContrastColorLight},

@@ -35,8 +35,8 @@ namespace Minne.ViewModels
 
         public ObservableCollection<ToDoModel> ToDoList { get; set; }
         public DelegateCommand AddTaskCommand { get; }
-        public DelegateCommand<object> DeleteCommand { get; set; }
-        public DelegateCommand<object> CompletedCommand { get; set; }
+        public DelegateCommand<ToDoModel> DeleteCommand { get; set; }
+        public DelegateCommand<ToDoModel> CompletedCommand { get; set; }
         public DelegateCommand RefreshCommand { get; }
 
         public ToDoListPageViewModel(IRestService restService)
@@ -47,8 +47,8 @@ namespace Minne.ViewModels
 
             AddTaskCommand = new DelegateCommand(() => MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.GoToAsync("todolist/todocreate").ConfigureAwait(false)));
 
-            DeleteCommand = new DelegateCommand<object>((todoId) => DeleteTask(int.Parse(todoId.ToString())));
-            CompletedCommand = new DelegateCommand<object>((todoId) => SortList(int.Parse(todoId.ToString())));
+            DeleteCommand = new DelegateCommand<ToDoModel>((toDoModel) => DeleteTask(toDoModel));
+            CompletedCommand = new DelegateCommand<ToDoModel>((toDoModel) => SortList(toDoModel));
 
             RefreshCommand = new DelegateCommand(async () => await RefreshDataAsync().ConfigureAwait(false));
         }
@@ -62,7 +62,7 @@ namespace Minne.ViewModels
                 if (isSuccess)
                 {
                     ToDoList.Add(toDoModel);
-                    SortList(toDoModel.Id);
+                    SortList(toDoModel);
 
                     UserDialogs.Instance.Toast($"Task with ID {toDoModel.Id} was created.");
                 }
@@ -104,18 +104,17 @@ namespace Minne.ViewModels
             }
         }
 
-        private void DeleteTask(int todoId)
+        private void DeleteTask(ToDoModel toDoModel)
         {
-            bool isSuccess = restService.DeleteToDo(todoId);
+            bool isSuccess = restService.DeleteToDo(toDoModel.Id);
 
             if (isSuccess)
             {
                 try
                 {
-                    var todoToDelete = ToDoList.Single(todo => todo.Id == todoId);
-                    ToDoList.Remove(todoToDelete);
+                    ToDoList.Remove(toDoModel);
 
-                    UserDialogs.Instance.Toast($"Task with ID {todoId} was deleted.");
+                    UserDialogs.Instance.Toast($"Task with ID {toDoModel.Id} was deleted.");
                 }
                 catch
                 {
@@ -123,42 +122,41 @@ namespace Minne.ViewModels
             }
         }
 
-        private void SortList(int todoId)
+        private void SortList(ToDoModel todoId)
         {
             try
             {
-                var checkedTodo = ToDoList.First(x => x.Id == todoId);
                 var separatedToDos = new List<ToDoModel>();
                 foreach (var todo in ToDoList)
                 {
-                    if (todo.Completed == checkedTodo.Completed && todo.Id != checkedTodo.Id)
+                    if (todo.Completed == todoId.Completed && todo.Id != todoId.Id)
                     {
                         separatedToDos.Add(todo);
                     }
                 }
 
-                var prevTodo = separatedToDos.LastOrDefault(t => t.Id < checkedTodo.Id);
-                var nextTodo = separatedToDos.Find(t => t.Id > checkedTodo.Id);
+                var prevTodo = separatedToDos.LastOrDefault(t => t.Id < todoId.Id);
+                var nextTodo = separatedToDos.Find(t => t.Id > todoId.Id);
                 int prevTodoIndex = ToDoList.IndexOf(prevTodo);
                 int nextTodoIndex = ToDoList.IndexOf(nextTodo);
-                int checkedTodoIndex = ToDoList.IndexOf(checkedTodo);
+                int checkedTodoIndex = ToDoList.IndexOf(todoId);
 
                 if (prevTodoIndex >= ToDoList.Count - 1)
                 {
-                    ToDoList.Remove(checkedTodo);
-                    ToDoList.Add(checkedTodo);
+                    ToDoList.Remove(todoId);
+                    ToDoList.Add(todoId);
                 }
                 else if (prevTodoIndex >= 0 && nextTodoIndex >= 0)
                 {
                     if (checkedTodoIndex < prevTodoIndex && prevTodoIndex >= 0)
                     {
-                        ToDoList.Remove(checkedTodo);
-                        ToDoList.Insert(prevTodoIndex, checkedTodo);
+                        ToDoList.Remove(todoId);
+                        ToDoList.Insert(prevTodoIndex, todoId);
                     }
                     else if (checkedTodoIndex > nextTodoIndex && nextTodoIndex >= 0)
                     {
-                        ToDoList.Remove(checkedTodo);
-                        ToDoList.Insert(nextTodoIndex, checkedTodo);
+                        ToDoList.Remove(todoId);
+                        ToDoList.Insert(nextTodoIndex, todoId);
                     }
                 }
                 else if (prevTodoIndex < 0)
