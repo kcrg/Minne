@@ -25,7 +25,7 @@ namespace Minne.ViewModels
             set => SetProperty(ref _isLoading, value);
         }
 
-        private bool _isRefreshing = false;
+        private bool _isRefreshing;
 
         public bool IsRefreshing
         {
@@ -122,57 +122,46 @@ namespace Minne.ViewModels
             }
         }
 
-        private void SortList(ToDoModel todoId)
+        private void SortList(ToDoModel toDoModel)
         {
             try
             {
-                var separatedToDos = new List<ToDoModel>();
-                foreach (var todo in ToDoList)
-                {
-                    if (todo.Completed == todoId.Completed && todo.Id != todoId.Id)
-                    {
-                        separatedToDos.Add(todo);
-                    }
-                }
-
-                var prevTodo = separatedToDos.LastOrDefault(t => t.Id < todoId.Id);
-                var nextTodo = separatedToDos.Find(t => t.Id > todoId.Id);
-                int prevTodoIndex = ToDoList.IndexOf(prevTodo);
-                int nextTodoIndex = ToDoList.IndexOf(nextTodo);
-                int checkedTodoIndex = ToDoList.IndexOf(todoId);
+                int prevTodoIndex = ToDoList.ToList().FindLastIndex(t => t.Id < toDoModel.Id && t.Completed == toDoModel.Completed);
+                int nextTodoIndex = ToDoList.ToList().FindIndex(t => t.Id > toDoModel.Id && t.Completed == toDoModel.Completed);
+                int sortedTodoIndex = ToDoList.IndexOf(toDoModel);
 
                 if (prevTodoIndex >= ToDoList.Count - 1)
                 {
-                    ToDoList.Remove(todoId);
-                    ToDoList.Add(todoId);
+                    ToDoList.Remove(toDoModel);
+                    ToDoList.Add(toDoModel);
                 }
                 else if (prevTodoIndex >= 0 && nextTodoIndex >= 0)
                 {
-                    if (checkedTodoIndex < prevTodoIndex && prevTodoIndex >= 0)
+                    if (sortedTodoIndex < prevTodoIndex && prevTodoIndex >= 0)
                     {
-                        ToDoList.Remove(todoId);
-                        ToDoList.Insert(prevTodoIndex, todoId);
+                        ToDoList.Remove(toDoModel);
+                        ToDoList.Insert(prevTodoIndex, toDoModel);
                     }
-                    else if (checkedTodoIndex > nextTodoIndex && nextTodoIndex >= 0)
+                    else if (sortedTodoIndex > nextTodoIndex && nextTodoIndex >= 0)
                     {
-                        ToDoList.Remove(todoId);
-                        ToDoList.Insert(nextTodoIndex, todoId);
+                        ToDoList.Remove(toDoModel);
+                        ToDoList.Insert(nextTodoIndex, toDoModel);
                     }
                 }
                 else if (prevTodoIndex < 0)
                 {
                     if (nextTodoIndex == 0)
                     {
-                        ToDoList.Move(checkedTodoIndex, nextTodoIndex);
+                        ToDoList.Move(sortedTodoIndex, nextTodoIndex);
                     }
                     else
                     {
-                        ToDoList.Move(checkedTodoIndex, nextTodoIndex - 1);
+                        ToDoList.Move(sortedTodoIndex, nextTodoIndex - 1);
                     }
                 }
                 else if (nextTodoIndex < 0)
                 {
-                    ToDoList.Move(checkedTodoIndex, prevTodoIndex + 1);
+                    ToDoList.Move(sortedTodoIndex, prevTodoIndex + 1);
                 }
             }
             catch (Exception)

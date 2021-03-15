@@ -76,9 +76,8 @@ namespace Minne.Views
         private void Edit(object sender, EventArgs e)
         {
             var btn = (ImageButton)sender;
-            var todoToEdit = btn.CommandParameter as ToDoModel;
 
-            string todoJson = JsonConvert.SerializeObject(todoToEdit);
+            string todoJson = JsonConvert.SerializeObject((ToDoModel)btn.CommandParameter);
             MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.GoToAsync($"todolist/todocreate?entry={todoJson}").ConfigureAwait(false));
         }
 
