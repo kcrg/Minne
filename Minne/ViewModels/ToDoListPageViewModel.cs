@@ -3,9 +3,10 @@ using Minne.Models;
 using Minne.Services;
 using Prism.Commands;
 using Prism.Mvvm;
+using Prism.Navigation;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
@@ -13,7 +14,7 @@ using Xamarin.Forms;
 
 namespace Minne.ViewModels
 {
-    public class ToDoListPageViewModel : BindableBase
+    public class ToDoListPageViewModel : BindableBase, INavigatedAware
     {
         private readonly IRestService restService;
 
@@ -197,6 +198,16 @@ namespace Minne.ViewModels
                 ToDoList.Add(todo);
             }
             IsLoading = false;
+        }
+
+        public void OnNavigatedFrom(INavigationParameters parameters)
+        {
+            // Not used
+        }
+
+        public async void OnNavigatedTo(INavigationParameters parameters)
+        {
+            await LoadDataAsync().ConfigureAwait(false);
         }
     }
 }

@@ -1,0 +1,30 @@
+﻿<TabbedPage x:Class="Minne.Views.TabbedPage" x:DataType="viewmodels:TabbedPageViewModel"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+    xmlns:prism="http://prismlibrary.com"
+    xmlns:viewmodels="clr-namespace:Minne.ViewModels"
+    xmlns:views="clr-namespace:Minne.Views"
+    android:TabbedPage.IsSmoothScrollEnabled="True"
+    android:TabbedPage.IsSwipePagingEnabled="False"
+    android:TabbedPage.ToolbarPlacement="Bottom"
+    prism:ViewModelLocator.AutowireViewModel="True">
+    <TabbedPage.Children>
+        <views:ToDoListPage Title="Tasks">
+            <views:ToDoListPage.IconImageSource>
+                <FontImageSource
+                    FontFamily="FontIcons"
+                    Glyph="{StaticResource TasksIcon}"
+                    Size="64" />
+            </views:ToDoListPage.IconImageSource>
+        </views:ToDoListPage>
+        <views:AboutPage Title="Author">
+            <views:AboutPage.IconImageSource>
+                <FontImageSource
+                    FontFamily="FontIcons"
+                    Glyph="{StaticResource AboutIcon}"
+                    Size="64" />
+            </views:AboutPage.IconImageSource>
+        </views:AboutPage>
+    </TabbedPage.Children>
+</TabbedPage>

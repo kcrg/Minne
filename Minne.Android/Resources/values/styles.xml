@@ -10,9 +10,15 @@
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     <item name="colorAccent">@color/colorAccent</item>
     <!-- Set theme colors from https://aka.ms/material-colors -->
+
+    <item name="android:windowActionBar">true</item>
+    <item name="android:windowNoTitle">false</item>
   </style>
 
   <style name="SplashScreenTheme" parent="MainTheme">
+    <item name="android:windowActionBar">false</item>
+    <item name="android:windowNoTitle">true</item>
+
     <item name="android:windowBackground">@drawable/splash_screen</item>
     <item name="android:statusBarColor">@color/icon_background</item>
     <item name="android:windowLightStatusBar">true</item>

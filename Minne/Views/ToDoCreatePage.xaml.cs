@@ -29,6 +29,11 @@ namespace Minne.Views
                 Title = "Edit";
                 var contactToEdit = JsonConvert.DeserializeObject<ToDoModel>(Json);
 
+                if (contactToEdit is null)
+                {
+                    return;
+                }
+
                 IDLabel.Text = contactToEdit.Id.ToString();
                 TitleEntry.Text = contactToEdit.Title;
                 checkBox.IsChecked = contactToEdit.Completed;

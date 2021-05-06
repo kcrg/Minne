@@ -10,7 +10,6 @@
     prism:ViewModelLocator.AutowireViewModel="True"
     BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight},
                                       Dark={StaticResource BackgroundColorDark}}"
-    Shell.PresentationMode="Animated"
     Visual="Material">
     <ContentPage.ToolbarItems>
         <controls:BaseToolbarItem Command="{Binding AddTaskCommand}" Glyph="{StaticResource AddIcon}" />
